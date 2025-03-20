@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - develop
+      - grupo3
 
 jobs:
   build:

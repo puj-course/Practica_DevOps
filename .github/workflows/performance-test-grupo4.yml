@@ -40,6 +40,7 @@ jobs:
           cat > performance-tests/load-test.js << 'EOF'
           import http from 'k6/http';
           import { sleep, check } from 'k6';
+          import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
           
           export const options = {
             vus: ${{ github.event.inputs.virtual_users || 10 }},
@@ -54,13 +55,19 @@ jobs:
             });
             sleep(1);
           }
+          
+          export function handleSummary(data) {
+            return {
+              "result.html": htmlReport(data),
+              "result.json": JSON.stringify(data)
+            };
+          }
           EOF
           
       - name: Run k6 Performance Tests
         uses: grafana/k6-action@v0.2.0
         with:
           filename: performance-tests/load-test.js
-          flags: --out json=result.json
 
       - name: Stop Application
         run: pkill -f 'java -jar' || true
@@ -68,5 +75,17 @@ jobs:
       - name: Upload Performance Results
         uses: actions/upload-artifact@v4
         with:
-          name: k6-report
-          path: result.json
+          name: k6-reports
+          path: |
+            result.html
+            result.json
+            
+      - name: Deploy Performance Report to GitHub Pages
+        if: github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-performance-reports
+          destination_dir: reports/${{ github.run_id }}
+          keep_files: true

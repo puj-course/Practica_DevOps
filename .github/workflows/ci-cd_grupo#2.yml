@@ -1,0 +1,35 @@
+name: CI/CD Workflow  # Nombre del workflow
+
+on:
+  push:
+    branches:
+      - grupo#2  # Reemplaza grupo# con el nombre de tu rama
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Usa un sistema Linux en GitHub Actions
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3  # Obtiene el código del repositorio
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Construcción del proyecto con Maven
+        run: mvn clean package  # Compila el proyecto
+
+      - name: Ejecutar pruebas unitarias
+        run: mvn test  # Ejecuta pruebas
+
+      - name: Guardar artefacto (JAR generado)
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-jar
+          path: target/*.jar

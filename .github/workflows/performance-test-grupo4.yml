@@ -79,13 +79,3 @@ jobs:
           path: |
             result.html
             result.json
-            
-      - name: Deploy Performance Report to GitHub Pages
-        if: github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          publish_branch: gh-performance-reports
-          destination_dir: reports/${{ github.run_id }}
-          keep_files: true

@@ -18,8 +18,6 @@ import static org.mockito.Mockito.*;
 // Indica que la prueba se ejecuta en un contexto de Spring Boot
 @SpringBootTest
 
-// Especifica que se usará el perfil "test" para esta prueba
-@ActiveProfiles("test")
 class HeroServiceTest {
 
     private HeroRepository heroRepository;

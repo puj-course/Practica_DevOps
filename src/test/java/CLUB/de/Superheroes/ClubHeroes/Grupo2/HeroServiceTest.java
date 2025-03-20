@@ -38,19 +38,30 @@ class HeroServiceTest {
     void testGetAllHeroes() {
         // Se crea una lista de héroes simulada
         List<Hero> heroes = Arrays.asList(
-                new Hero(1L, "Superman", "Super fuerza", "Krypton", 1, "Clark Kent", null),
-                new Hero(2L, "Batman", "Alta inteligencia", "Gotham", 2, "Bruce Wayne", null)
+                new Hero(1L,
+                        "Superman",
+                        "Super fuerza",
+                        "Krypton", 1,
+                        "Clark Kent",
+                        null),
+                new Hero(2L,
+                        "Batman",
+                        "Alta inteligencia",
+                        "Gotham",
+                        2,
+                        "Bruce Wayne",
+                        null)
         );
         // Se configura el comportamiento del mock para que devuelva la lista simulada
         when(heroRepository.findAll()).thenReturn(heroes);
 
-        // Se llama al método del servicio que debe recuperar todos los héroes
+        // Se llama al metodo del servicio que debe recuperar todos los héroes
         List<Hero> result = heroService.getAllHeroes();
 
         // Se verifica que el resultado tiene el tamaño esperado
         assertEquals(2, result.size());
 
-        // Se verifica que el método findAll del repositorio fue llamado exactamente una vez
+        // Se verifica que el metodo findAll del repositorio fue llamado exactamente una vez
         verify(heroRepository, times(1)).findAll();
     }
 }

@@ -1,9 +1,9 @@
-name: CI-CD
+name: CI-CD-gupo-4
 on:
  pull_request:
  branches:
  - develop
- - grupo#
+ - grupo4
  push:
  branches:
  - develop

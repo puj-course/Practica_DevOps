@@ -35,5 +35,3 @@ Este proyecto tiene como objetivo permitir a los estudiantes:
 1. Clona el repositorio:
    ```bash
    git clone <URL_DEL_REPOSITORIO>
-_
-

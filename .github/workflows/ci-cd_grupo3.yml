@@ -1,4 +1,4 @@
-name: GRUPO 3 CI-CD
+name: EL GRUPO 3 CI-CD
 
 on:
   pull_request:

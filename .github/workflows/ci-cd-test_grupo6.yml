@@ -25,13 +25,7 @@ jobs:
 
       - name: 🔍 Ejecutar pruebas
         run: mvn test
-      - name: 📋 Subir reporte de pruebas
-        if: always()  # Se ejecuta incluso si las pruebas fallan
-        uses: actions/upload-artifact@v3
-        with:
-          name: reporte-pruebas
-          path: target/surefire-reports/  # Carpeta donde Maven genera los reportes
-          
+        
       - name: 🏗️ Construcción del proyecto
         run: mvn clean package
 

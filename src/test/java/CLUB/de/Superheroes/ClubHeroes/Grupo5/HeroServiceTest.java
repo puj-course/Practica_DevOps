@@ -1,4 +1,4 @@
-package CLUB.de.Superheroes.ClubHeroes;
+package CLUB.de.Superheroes.ClubHeroes.Grupo5;
 
 import CLUB.de.Superheroes.ClubHeroes.entity.Hero;
 import CLUB.de.Superheroes.ClubHeroes.repository.HeroRepository;
@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 // Indica que la prueba se ejecuta en un contexto de Spring Boot

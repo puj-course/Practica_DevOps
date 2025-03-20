@@ -1,10 +1,10 @@
-name: CI-CD-grupo-1
+name: CI-CD_grupo-5
 
 on:
   pull_request:
     branches:
       - develop
-      - grupo-1
+      - grupo-5
   push:
     branches:
       - develop
@@ -16,16 +16,16 @@ jobs:
     steps:
       - name: Checkout del código
         uses: actions/checkout@v3
-
+        
       - name: Configurar JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-
+          
       - name: Construcción del proyecto
         run: mvn clean package
-
+        
       - name: Subir artefacto
         uses: actions/upload-artifact@v3
         with:

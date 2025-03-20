@@ -1,0 +1,72 @@
+name: Performance Testing Grupo 4
+
+on:
+  push:
+    branches: [ grupo4 ]
+  workflow_dispatch:
+    inputs:
+      test_duration:
+        description: 'Test duration in seconds'
+        required: true
+        default: '30'
+      virtual_users:
+        description: 'Number of virtual users'
+        required: true
+        default: '10'
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build and Run Application
+        run: |
+          mvn clean package -DskipTests
+          nohup java -jar target/*.jar &
+          echo "Waiting for application to start..."
+          sleep 30
+
+      - name: Create k6 Test Script
+        run: |
+          mkdir -p performance-tests
+          cat > performance-tests/load-test.js << 'EOF'
+          import http from 'k6/http';
+          import { sleep, check } from 'k6';
+          
+          export const options = {
+            vus: ${{ github.event.inputs.virtual_users || 10 }},
+            duration: '${{ github.event.inputs.test_duration || 30 }}s',
+          };
+          
+          export default function () {
+            const res = http.get('http://localhost:8080/');
+            check(res, {
+              'status is 200': (r) => r.status === 200,
+              'response time < 500ms': (r) => r.timings.duration < 500,
+            });
+            sleep(1);
+          }
+          EOF
+          
+      - name: Run k6 Performance Tests
+        uses: grafana/k6-action@v0.2.0
+        with:
+          filename: performance-tests/load-test.js
+          flags: --out json=result.json
+
+      - name: Stop Application
+        run: pkill -f 'java -jar' || true
+
+      - name: Upload Performance Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-report
+          path: result.json 

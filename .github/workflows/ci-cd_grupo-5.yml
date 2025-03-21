@@ -1,4 +1,4 @@
-name: CI-CD_Alternativo_grupo5
+name: CI-CD_grupo5
 
 on:
   push:
